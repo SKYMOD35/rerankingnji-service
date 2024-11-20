@@ -1,0 +1,51 @@
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env
+*.env
+
+# Docker files and artifacts
+*.docker
+docker-compose.yml
+
+# Flask specific files
+instance/
+.env
+
+# Log files
+*.log
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Pytest cache
+.pytest_cache/
+.tox/
+.mypy_cache/
+coverage/
+htmlcov/
+*.cover
+*.coverage
+.coverage.*
+
+# VS Code and other IDE configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+
+
+# Ignore any downloaded model files or large data
+data/
+models/
