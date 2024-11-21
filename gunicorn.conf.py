@@ -11,7 +11,7 @@ workers = int(os.getenv("WORKERS", cpu_cores))  # Use one worker per core
 worker_class = 'sync'
 
 # Address and port to bind
-bind = os.getenv("BIND", "0.0.0.0:5000")
+bind = os.getenv("BIND", "0.0.0.0:5010")
 
 # Timeout in seconds for each worker (handles long-running requests)
 timeout = int(os.getenv("TIMEOUT", 60))

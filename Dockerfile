@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the application port (Gunicorn listens on this port)
-EXPOSE 5000
+EXPOSE 5010
 
 # Copy the Gunicorn configuration file into the container
 COPY gunicorn.conf.py /app/gunicorn.conf.py
