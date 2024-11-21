@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from FlagEmbedding import FlagReranker
+from FlagEmbedding import LayerWiseFlagLLMReranker
 import logging
 import os
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Initialize the reranker
-reranker = FlagReranker('BAAI/bge-reranker-v2-m3', use_fp16=True)  # Setting use_fp16 to True speeds up computation with a slight performance degradation
+reranker = LayerWiseFlagLLMReranker('BAAI/bge-reranker-v2-minicpm-layerwise', use_fp16=True) # Setting use_fp16 to True speeds up computation with a slight performance degradation
 
 
 @app.route('/health', methods=['GET'])
@@ -44,7 +44,7 @@ def rerank():
         input_data = [[query, passage] for passage in passages]
 
         # Compute scores
-        scores = reranker.compute_score(input_data, normalize=True)
+        scores = reranker.compute_score(input_data, normalize=True, cutoff_layers=[28])
 
         return jsonify({'data': scores})
 
