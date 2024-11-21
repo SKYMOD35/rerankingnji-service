@@ -42,10 +42,9 @@ def rerank():
 
         # Prepare input for reranker
         input_data = [[query, passage] for passage in passages]
-        normalize = True
 
         # Compute scores
-        scores = reranker.compute_score(input_data, normalize=normalize)
+        scores = reranker.compute_score(input_data, normalize=True)
 
         return jsonify({'data': scores})
 
