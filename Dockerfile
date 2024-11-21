@@ -28,4 +28,4 @@ EXPOSE 5000
 COPY gunicorn.conf.py /app/gunicorn.conf.py
 
 # Command to run the Flask app with Gunicorn using the config file
-CMD ["gunicorn", "-c", "gunicorn.conf.py", "app:app"]
+CMD ["gunicorn", "--config", "gunicorn.conf.py", "app:app"]
