@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from FlagEmbedding import FlagReranker
-from concurrent.futures import ThreadPoolExecutor, TimeoutError
 import logging
 import os
 
@@ -10,10 +9,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Initialize the reranker
-reranker = FlagReranker('BAAI/bge-reranker-v2-m3', use_fp16=True) # Setting use_fp16 to True speeds up computation with a slight performance degradation
-
-# Thread pool for timeout handling
-executor = ThreadPoolExecutor(max_workers=1)
+reranker = FlagReranker('BAAI/bge-reranker-v2-m3', use_fp16=True)  # Setting use_fp16 to True speeds up computation with a slight performance degradation
 
 
 @app.route('/health', methods=['GET'])
@@ -48,20 +44,11 @@ def rerank():
         input_data = [[query, passage] for passage in passages]
         normalize = True
 
-        # Compute scores with timeout
-        future = executor.submit(reranker.compute_score, input_data, normalize=normalize)
-        scores = future.result(timeout=10)  # Timeout in seconds
+        # Compute scores
+        scores = reranker.compute_score(input_data, normalize=normalize)
 
         return jsonify({'scores': scores})
 
-    except TimeoutError:
-        logging.error("Reranking operation timed out.")
-        return jsonify({'error': 'Reranking operation timed out.'}), 504
     except Exception as e:
         logging.error(f"Error occurred: {e}")
         return jsonify({'error': str(e)}), 500
-
-
-if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)

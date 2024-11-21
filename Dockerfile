@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Install Python dependencies
-RUN pip install  -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the entire application code to the working directory
 COPY . .
@@ -21,5 +21,8 @@ COPY . .
 # Expose the application port (Gunicorn listens on this port)
 EXPOSE 5000
 
-# Command to run the Flask app with Gunicorn
-CMD ["gunicorn", "-w", "33", "-b", "0.0.0.0:5000", "--timeout", "120", "app:app"]
+# Copy the Gunicorn configuration file into the container
+COPY gunicorn.conf.py /app/gunicorn.conf.py
+
+# Command to run the Flask app with Gunicorn using the config file
+CMD ["gunicorn", "-c", "gunicorn.conf.py", "app:app"]
