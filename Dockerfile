@@ -13,13 +13,10 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the entire application code to the working directory
 COPY . .
-
-# Limit OpenBLAS threads
-ENV OPENBLAS_NUM_THREADS=1
 
 # Expose the application port (Gunicorn listens on this port)
 EXPOSE 5000
