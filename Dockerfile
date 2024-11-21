@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Install Python dependencies
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire application code to the working directory
 COPY . .
@@ -24,5 +24,5 @@ EXPOSE 5000
 # Copy the Gunicorn configuration file into the container
 COPY gunicorn.conf.py /app/gunicorn.conf.py
 
-# Command to run the Flask app with Gunicorn using the config file
-CMD ["gunicorn", "--config", "gunicorn.conf.py", "app:app"]
+# Add resource limits and preload the app to optimize worker memory usage
+CMD ["gunicorn", "--config", "gunicorn.conf.py", "--preload", "app:app"]
