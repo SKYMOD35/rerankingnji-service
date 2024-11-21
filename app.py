@@ -47,7 +47,7 @@ def rerank():
         # Compute scores
         scores = reranker.compute_score(input_data, normalize=normalize)
 
-        return jsonify({'scores': scores})
+        return jsonify({'data': scores})
 
     except Exception as e:
         logging.error(f"Error occurred: {e}")
